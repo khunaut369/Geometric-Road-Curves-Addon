@@ -1,0 +1,37 @@
+{
+    "format_version": 2,
+    "metadata": {
+        "authors": [ "khunaut369" ],
+        "license": "GPL-3.0-or-later"
+    },
+    "header": {
+        "description": "Generate geometric horizontal and vertical road curves in Minecraft.",
+        "name": "Geometric Road Curves",
+        "uuid": "68b40882-1b97-4d2c-b1af-dfe360d9d714",
+        "version": [ 1, 0, 0 ],
+        "min_engine_version": [ 1, 21, 0 ]
+    },
+    "modules": [
+        {
+            "description": "Script module",
+            "type": "script",
+            "uuid": "53d7f2bf-69c9-4621-8e9d-86e563720714",
+            "version": [ 1, 0, 0 ],
+            "entry": "scripts/main.js",
+            "language": "javascript"
+        }
+    ],
+    "dependencies": [
+        {
+            "module_name": "@minecraft/server",
+            "version": "beta"
+        },
+        {
+            "module_name": "@minecraft/server-ui",
+            "version": "beta"
+        }
+    ],
+    "capabilities": [
+        "script_eval"
+    ]
+}
