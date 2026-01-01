@@ -7,7 +7,7 @@
 [![Bedrock Edition](https://img.shields.io/badge/Minecraft-Bedrock-green.svg)](https://www.minecraft.net/)
 [![Script API](https://img.shields.io/badge/Script-API-orange.svg)]()
 
-> **🎉 Happy New Year 2026!**
+> ** Happy New Year 2026!**
 > Let's kickstart the year with precise engineering. Build smarter, smoother, and better roads in your Minecraft world this 2026!
 
 **Geometric Road Curves** transforms Minecraft road building from simple block placement into precise Civil Engineering design. Powered by the Script API, this add-on calculates complex geometry to help you create realistic, smooth, and mathematically accurate road alignments directly on your smartphone.
@@ -19,7 +19,6 @@
 This page provides a summary. For deep dives into every mode, vector logic, and advanced techniques, please read the full manual:
 
 ### [👉 Click here to read the Full Manual](https://khunaut369.github.io/Geometric-Road-Curves-Addon/)
-*(Note: This link works if you have set up GitHub Pages for the `docs/` folder)*
 
 ---
 
