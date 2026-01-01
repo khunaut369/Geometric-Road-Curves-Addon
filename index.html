@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Road Curves Manual (Complete Edition)</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #1b5e20;
+            --accent-color: #ffca28;
+            --bg-color: #f4f4f9;
+            --text-color: #333;
+            --code-bg: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Sarabun', 'Kanit', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        h1 { margin: 0; font-size: 1.8rem; }
+        h2 { color: var(--secondary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #444; margin-top: 20px; }
+        
+        p, li { font-size: 1rem; }
+        
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .tip {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) { background-color: #f2f2f2; }
+
+        .btn-mode {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 600px) {
+            body { font-size: 16px; }
+            .container { padding: 10px; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Sarabun:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>👷‍♂️ Pocket Highway Engineer's Manual</h1>
+        <p>Geometric Road Curves Manual (Add-on)</p>
+    </header>
+
+    <section id="intro">
+        <p>Welcome to the most advanced road construction system in Minecraft Bedrock! This system automatically calculates engineering curves and slopes, perfect for smartphone players.</p>
+    </section>
+
+    <section id="prep">
+        <h2>🛠️ Preparation Before Starting</h2>
+        <ol>
+            <li><strong>Main Tool (Wand):</strong> Hold a <code>Stone Pickaxe</code> only.</li>
+            <li><strong>Permissions:</strong> Type the command <code>/tag @s add road</code></li>
+            <li><strong>Controls (Important for Mobile):</strong>
+                <ul>
+                    <li><strong>Place Point:</strong> "Long Press" on a block until particles appear.</li>
+                    <li><strong>Select Point to Edit:</strong> "Hold Sneak" and then "Long Press" on the point.</li>
+                </ul>
+            </li>
+        </ol>
+    </section>
+
+    <section id="vocab">
+        <h2>📚 Chapter 1: Basic Terminology</h2>
+        <ul>
+            <li><strong>t1 (Tangent 1):</strong> Start direction and slope (where the road originates).</li>
+            <li><strong>ts (Target Tangent):</strong> Target direction and slope (where the road aims towards in Mode B).</li>
+            <li><strong>g (Grade):</strong> Reference slope vector (used in Mode A1, A2).</li>
+            <li><strong>h (Height):</strong> Height vector (used to define apex or sag height in Mode A2, B2).</li>
+            <li><strong>Region:</strong> The "Template" or source area of the road pattern to be placed.</li>
+        </ul>
+    </section>
+
+    <section id="modes">
+        <h2>🎮 Chapter 2: Operation Modes</h2>
+        <p>Type <code>!mode [mode_name]</code> to switch modes.</p>
+
+        <h3>🅰️ Mode A Series (Point-to-Point)</h3>
+        <p>Suitable for general roads or mountain passes where you define turns manually.</p>
+        <ul>
+            <li><span class="btn-mode">Mode A</span> <strong>Basic:</strong> Auto calculates slope from start to end.</li>
+            <li><span class="btn-mode">Mode A1</span> <strong>End Slope Control:</strong> Uses vector <strong>g</strong> to define the slope at the destination (e.g., forcing a flat landing).</li>
+            <li><span class="btn-mode">Mode A2</span> <strong>Apex Control:</strong> Uses vector <strong>h</strong> to define how high the curve peak (or sag) is relative to the start.</li>
+        </ul>
+
+        <h3>🅱️ Mode B Series (Intersection Method)</h3>
+        <p>Suitable for interchanges, highways, or places requiring high precision (System calculates the curve geometry based on tangents).</p>
+        <ul>
+            <li><span class="btn-mode">Mode B</span> <strong>Basic:</strong> Simple connection from t1 to ts.</li>
+            <li><span class="btn-mode">Mode B1</span> <strong>S-Curve Ramp:</strong> Creates a smooth S-shaped ramp (auto-calculates mid-curve slope gT).</li>
+            <li><span class="btn-mode">Mode B2</span> <strong>Vertex Control:</strong> Like A2 but for intersections, defines apex height for overpasses.</li>
+        </ul>
+
+        <div class="tip">
+            <strong>Curve Generation Commands for Mode B:</strong>
+            <ul>
+                <li><code>!c spi</code> (Spiral): <strong>Recommended!</strong> Clothoid spiral for smooth driving realism.</li>
+                <li><code>!c sim</code> (Simple): Circular arc.</li>
+                <li><code>!c cwt</code> (Curve with Taper): Compound curve with tapering radius at ends.</li>
+                <li><code>!c rrr</code> (Special): Special Polynomial curve for specific aesthetics.</li>
+            </ul>
+        </div>
+
+        <h3>🅾️ Mode C (Roundabout)</h3>
+        <p>Suitable for roundabouts or plazas.</p>
+        <ol>
+            <li>Type <code>!mode c</code></li>
+            <li>Long press the <strong>Center Point</strong></li>
+            <li>Long press the <strong>Edge Point</strong> (Radius)</li>
+            <li>Type <code>!c cir</code></li>
+        </ol>
+        <div class="note"><strong>Note:</strong> Mode C calculates Horizontal alignment only.</div>
+    </section>
+
+    <section id="feedback">
+        <h2>📊 Chapter 3: Reading Feedback</h2>
+        <p>When a curve is generated, a green message will appear. Here is how to read the values:</p>
+
+        <h3>1. Basic Stats (All Modes)</h3>
+        <ul>
+            <li><strong>R (Radius):</strong> Curve radius.</li>
+            <li><strong>L (Length):</strong> Total road length (blocks).</li>
+            <li><strong>A (Angle):</strong> Turn angle (degrees).</li>
+        </ul>
+
+        <h3>2. Vertical Stats (Important)</h3>
+        <p><strong>Total Height Group (Mode A, A1, B, B1):</strong></p>
+        <ul>
+            <li><code>h</code> = Total height difference (End height minus Start height).</li>
+            <li><code>g1</code>, <code>g2</code> = Start Slope, End Slope (%).</li>
+        </ul>
+
+        <p><strong>Apex Height Group (Mode A2, B2):</strong></p>
+        <ul>
+            <li><code>h</code> = <strong>Apex/Sag Height</strong> relative to the start (NOT total end height).</li>
+            <li><code>gT1</code> / <code>gT2</code> = Slopes going up to and down from the apex.</li>
+        </ul>
+
+        <p><strong>Ramp Group (Mode A1, B1):</strong></p>
+        <ul>
+            <li><code>gT</code> (Tangent Gradient) = <strong>Max slope at mid-curve</strong> (Higher value means steeper/harder to drive).</li>
+        </ul>
+    </section>
+
+    <section id="construction">
+        <h2>🏗️ Chapter 4: Construction</h2>
+        
+        <h3>Step 1: Select Template (!sct)</h3>
+        <div class="note">
+            <strong>Very Important:</strong> Before typing the command, <u>stand facing the direction of the road</u> to define the "Forward" direction.
+        </div>
+        <ol>
+            <li>Build a short template of your road on the ground.</li>
+            <li>Stand facing the road direction and type <code>!sct</code>.</li>
+            <li>Long press <strong>Bottom-Left</strong> and <strong>Top-Right</strong> corners to select the region.</li>
+        </ol>
+
+        <h3>Step 2: Pivot Point (!cax) - *Optional*</h3>
+        <p>Type <code>!cax</code> and long press a block in the region to set the pivot axis (defaults to center if skipped).</p>
+
+        <h3>Step 3: Place Blocks (!set)</h3>
+        <ul>
+            <li><code>!set a</code> : Overwrite all (Paste everything).</li>
+            <li><code>!set b</code> : Fill Air (Only place blocks where there is air, don't overwrite existing blocks).</li>
+            <li><code>!set c</code> : <strong>Recommended!</strong> No Air (Paste only solid blocks, ignore air from template).</li>
+        </ul>
+    </section>
+
+    <section id="editing">
+        <h2>🔧 Chapter 5: Editing Tools</h2>
+        
+        <h3>Undo / Redo</h3>
+        <ul>
+            <li><code>!und</code> : Undo 1 step (Remove placed blocks or cancel last point).</li>
+            <li><code>!und [number]</code> : Undo multiple steps, e.g., <code>!und 5</code>.</li>
+            <li><code>!red</code> : Redo (If you undid something by mistake).</li>
+        </ul>
+
+        <h3>Point Management</h3>
+        <ul>
+            <li><strong>Move (!mov):</strong> Sneak+Select point -> Type <code>!mov</code> -> Long press new spot.</li>
+            <li><strong>Delete (!del):</strong> Sneak+Select point -> Type <code>!del</code>.</li>
+            <li><strong>Insert (!add):</strong> (Mode A) Sneak+Select 2 adjacent points -> Type <code>!add</code>.</li>
+        </ul>
+
+        <h3>Real-time Placement (!pos)</h3>
+        <p>Use in Mode A, A1, A2 for precision.</p>
+        <ol>
+            <li>Type <code>!pos</code></li>
+            <li>The last point will follow your player position.</li>
+            <li>Walk to the desired spot and long press to place.</li>
+        </ol>
+
+        <h3>Reset / Clear</h3>
+        <ul>
+            <li><code>!rst</code> : Clear lines/points, start over (Mode remains).</li>
+            <li><code>!end</code> : End session, clear everything.</li>
+        </ul>
+    </section>
+
+    <section id="faq">
+        <h2>❓ Chapter 6: Frequently Asked Questions (FAQ)</h2>
+        <p><strong>Q: Blocks are placed sideways or upside down?</strong><br>
+        A: You faced the wrong direction when using <code>!sct</code>. Use <code>!und</code>, stand in front of the template facing the road direction, and use <code>!sct</code> again.</p>
+
+        <p><strong>Q: Cannot generate curve (Warning message)?</strong><br>
+        A: The angle might be too sharp or the distance too short. Try moving t1/ts or point S further out.</p>
+
+        <p><strong>Q: Particle lines disappeared?</strong><br>
+        A: Render distance is optimized to 64 blocks around you. Move closer to the area, and they will reappear.</p>
+        
+        <p><strong>Q: Are Mod blocks supported?</strong><br>
+        A: Yes, the system copies everything inside the Region template.</p>
+    </section>
+
+    <section id="cheatsheet">
+        <h2>📝 Command Cheatsheet</h2>
+        <table>
+            <tr>
+                <th>Command</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><code>!mode [a/b/c]</code></td>
+                <td>Change operation mode</td>
+            </tr>
+            <tr>
+                <td><code>!c [sim/spi]</code></td>
+                <td>Calculate Curve (Simple / Spiral)</td>
+            </tr>
+            <tr>
+                <td><code>!c [cwt/rrr]</code></td>
+                <td>Calculate Special Curve (Mode B only)</td>
+            </tr>
+            <tr>
+                <td><code>!pos</code></td>
+                <td>Real-time point placement</td>
+            </tr>
+            <tr>
+                <td><code>!sct</code></td>
+                <td>Select Region (Face forward!)</td>
+            </tr>
+            <tr>
+                <td><code>!set c</code></td>
+                <td>Place Structure (No Air)</td>
+            </tr>
+            <tr>
+                <td><code>!und [n]</code></td>
+                <td>Undo [n] steps</td>
+            </tr>
+            <tr>
+                <td><code>!mov</code> / <code>!del</code></td>
+                <td>Move / Delete selected point</td>
+            </tr>
+            <tr>
+                <td><code>!rst</code></td>
+                <td>Reset lines, start over</td>
+            </tr>
+        </table>
+    </section>
+
+    <footer style="text-align: center; margin-top: 50px; color: #777; font-size: 0.8em;">
+        <p>Developed by Geometric Road Curves Add-on Team | Complete Manual</p>
+    </footer>
+</div>
+
+</body>
+</html>
